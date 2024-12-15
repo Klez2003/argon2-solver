@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="argon2-solver",
-    version="1.0.0",
+    version="1.0.1",
     author="Klez",
     author_email="klez@cock.li",
     description="A solver for Argon2-based challenges.",
