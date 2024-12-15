@@ -2,6 +2,7 @@ import subprocess
 import sys
 import re
 import time
+import os
 import random
 import string
 
@@ -12,12 +13,9 @@ def generate_random_string(length):
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
 
 def argon2_hash(password, salt, time_cost, memory_cost):
-    result = subprocess.run(
-        ['argon2', password, '-t', time_cost, '-k', memory_cost, '-p', '1', '-id', '-v', '13', '-r', salt],
-        capture_output=True,
-        text=True
-    )
-    return result.stdout.splitlines()[0]
+    # Replace this with actual call to argon2
+    result = subprocess.run(['argon2', password, '-t', time_cost, '-k', memory_cost, '-p', '1', '-id', '-v', '13', '-r', salt], capture_output=True, text=True)
+    return result.stdout.splitlines()[0]  # Simulated output
 
 def main():
     required_utils = ['argon2', 'xxd', 'bc']
@@ -28,12 +26,14 @@ def main():
 
     challenge = sys.argv[1] if len(sys.argv) > 1 else input("Enter Challenge Code: ").strip()
 
+    # Validate the challenge format
     if not re.match(r'^([0-9]+):([0-9]+):([A-Za-z0-9]+):([0-9]+)$', challenge):
         print("Invalid challenge format. Expected format: memory_cost:time_cost:salt:difficulty")
         return
 
     memory_cost, time_cost, salt, difficulty = map(str.strip, challenge.split(':'))
 
+    # Debugging output
     print(f"Memory Cost: {memory_cost}")
     print(f"Time Cost: {time_cost}")
     print(f"Salt: {salt}")
@@ -46,7 +46,7 @@ def main():
     print(f"Time Cost: {time_cost}\n")
 
     n = 1
-    start_time = time.time()
+    start_time = time.time()  # Start tracking time
 
     while True:
         pw = f"{pw_prefix}{n}"
@@ -59,6 +59,7 @@ def main():
             print("This is the code you enter into the site to pass the challenge.\n")
             return
 
+        # Calculate elapsed time in seconds
         elapsed_time = time.time() - start_time
         print(f"\rElapsed Time: {elapsed_time:.0f} seconds.", end='')
 
